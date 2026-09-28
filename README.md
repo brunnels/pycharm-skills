@@ -1,92 +1,60 @@
-[![official JetBrains project](http://jb.gg/badges/official.svg)](https://confluence.jetbrains.com/display/ALL/JetBrains+on+GitHub)
+# PyCharm Skills
 
-# Rider Skills
+Agent Skills for Python development workflows in JetBrains PyCharm, using the configured PyCharm MCP server for project-aware code, notebook, and database operations.
 
-A set of [Agent Skills](https://docs.claude.com/en/docs/claude-code/skills) that give coding agents **IDE-grade code intelligence inside JetBrains Rider**. Instead of falling back to text edits, `grep`, and print debugging, these skills drive Rider's refactoring engine, debugger, code coverage data, and static analysis through the **Rider MCP server** — so a rename updates every resolved reference, a breakpoint inspects real runtime state, existing tests are located precisely, and diagnostics catch errors before a full build.
-
-## What's included
-
-Three skills work across every Rider-supported language, one locates existing C# tests, and three are focused on Unreal Engine C++.
-
-### General — any Rider solution
+## Skills
 
 | Skill | Purpose |
-| --- | --- |
-| [`refactoring-code`](skills/refactoring-code/SKILL.md) | Semantic refactoring — rename, move types/namespaces, safe-delete, extract interface/base class/method, change signatures — resolved through the IDE's reference index instead of grep + text replace. |
-| [`debugging-code`](skills/debugging-code/SKILL.md) | Debugger-driven runtime root-cause analysis — set breakpoints and tracepoints, step, inspect frame values, and evaluate expressions to answer questions static reading can't. |
-| [`navigating-code`](skills/navigating-code/SKILL.md) | Semantic code navigation — find all usages of a symbol and all implementations of an interface, class or virtual member through the IDE reference index instead of grep. |
+|---|---|
+| [`python-project-workflow`](skills/python-project-workflow/SKILL.md) | Python project and interpreter inspection, IDE diagnostics, formatting, run configurations, and project operations. Includes the complete current MCP tool inventory. |
+| [`debugging-code`](skills/debugging-code/SKILL.md) | Investigate Python runtime failures with run configurations, tracebacks, code navigation, and IDE diagnostics. The current MCP server does not expose breakpoint or frame-inspection controls. |
+| [`finding-tests`](skills/finding-tests/SKILL.md) | Locate and run Python tests using project search and existing test run configurations. |
+| [`navigating-code`](skills/navigating-code/SKILL.md) | Locate Python symbols, inspect call relationships, and navigate project code. |
+| [`refactoring-code`](skills/refactoring-code/SKILL.md) | Rename Python symbols with PyCharm semantic refactoring; documents unsupported MCP refactorings accurately. |
+| [`python-notebooks`](skills/python-notebooks/SKILL.md) | Create, inspect, edit, and execute Jupyter notebooks and kernels. |
+| [`database-workflows`](skills/database-workflows/SKILL.md) | Inspect database connections/schemas, preview data, and execute or manage SQL queries. |
 
-All three cover .NET/C#, F#, VB, C++, Unity, Unreal Engine, XAML, Razor, and other mixed-language projects.
+## MCP tool coverage
 
-### C#/.NET
-
-| Skill | Purpose |
-| --- | --- |
-| [`finding-tests`](skills/finding-tests/SKILL.md) | Locate existing tests for a C# class or method using Rider's test coverage data before adding or editing tests. |
-
-### Unreal Engine C++ — requires a `.uproject`
-
-| Skill | Purpose |
-| --- | --- |
-| [`ue-code-authoring`](skills/ue-code-authoring/SKILL.md) | Write and modify UE C++ (classes, actors, components, subsystems, interfaces, function libraries) with IDE diagnostics catching UHT/reflection errors and missing module deps before a build. |
-| [`ue-live-debugging`](skills/ue-live-debugging/SKILL.md) | Root-cause UE C++ crashes, runtime bugs, and unexpected behavior — call-hierarchy tracing, live breakpoints, crash-log triage, and live PIE state inspection via Python. |
-| [`ue-test-authoring`](skills/ue-test-authoring/SKILL.md) | Author UE automated tests (Automation, CQTest, Functional, Gauntlet, LowLevel) with IDE checks for registration errors, wrong `RunTest` return types, and missing includes. |
-
-## How it works
-
-Each skill's `SKILL.md` teaches the workflow, decision points, and guardrails; where needed, `reference/` files hold detailed tool contracts and patterns. At runtime a skill:
-
-1. **Checks for the Rider MCP tools** in the session's deferred-tool list and loads their live schemas — the schemas are authoritative for parameter names, never guessed.
-2. **Uses Rider's semantic engine** (ReSharper / IDE index) for anything grep can't resolve: cross-language usages, generated/reflected UE code, `nameof`, XAML `x:Name`, `<see cref>`, and more.
-3. **Degrades gracefully.** When the Rider MCP server isn't connected, the skill states the blocker and falls back to standard file/`grep` tools, documenting which IDE-backed quality steps were skipped.
+The project-workflow reference, [`available-tools.md`](skills/python-project-workflow/reference/available-tools.md), records all 51 commands reported by the configured PyCharm MCP server, grouped by Python/project, notebook, database, and routing workflows. Exact parameters must come from the live tool schema; the catalog deliberately does not invent signatures. Tool availability can vary by server version.
 
 ## Requirements
 
-- **JetBrains Rider** with its MCP server enabled and the target solution open.
-- **A coding agent that supports Agent Skills and MCP** (e.g. Claude Code).
-- **For the UE skills:** an Unreal Engine C++ project — a `.uproject` must be in the working directory.
+- JetBrains PyCharm with its MCP server enabled and the target project open.
+- An agent that supports Agent Skills and the PyCharm MCP server.
+- Database and notebook workflows additionally require the relevant IDE connection or kernel.
 
 ## Install
 
-### 1. Connect the Rider MCP server
-
-In Rider, open **Settings → Tools → MCP Server**, enable the server, and click **Auto-Configure** for your client (Claude Code, Codex, etc.) — Rider registers itself with the agent, no commands needed. Then run the agent from inside the solution folder Rider has open.
-
-### 2. Install the skills
-
-**Claude Code**
+### Claude Code
 
 ```text
-/plugin marketplace add JetBrains/rider-skills
-/plugin install rider-skills@rider-skills
+/plugin marketplace add brunnels/pycharm-skills
+/plugin install pycharm-skills@pycharm-skills
 /reload-plugins
 ```
 
-**Codex**
+### Codex
 
 ```bash
-codex plugin marketplace add JetBrains/rider-skills
+codex plugin marketplace add brunnels/pycharm-skills
 ```
 
-Then run `/plugins` inside Codex and install **Rider Skills** from the browser.
+Then install **PyCharm Skills** from the `/plugins` browser.
 
-**Manual**
+### Manual
 
-For agents without plugin support, copy or symlink individual skill folders from `skills/` into `~/.claude/skills/` (all projects) or `<project>/.claude/skills/` (one project).
+Copy or symlink individual folders from `skills/` into the Agent Skills directory supported by your client.
 
 ## Repository layout
 
 | Path | Contents |
-| --- | --- |
-| `skills/` | All six skills, one folder each. |
-| `skills/<skill>/SKILL.md` | Skill definition — frontmatter (name, description, allowed tools) and workflow. |
-| `skills/<skill>/reference/` | Progressive-disclosure reference: tool contracts, patterns, conventions loaded on demand. |
-| `.claude-plugin/` | Claude Code plugin (`plugin.json`) and marketplace (`marketplace.json`) metadata. |
-| `.codex-plugin/` | Codex plugin metadata (`plugin.json`). |
-
-## Contributing
-
-Issues and pull requests are welcome — improvements to workflows, reference contracts, and coverage of additional Rider languages and UE frameworks.
+|---|---|
+| `skills/` | Python, notebook, database, and project workflow skills. |
+| `skills/<skill>/SKILL.md` | Skill trigger description and workflow. |
+| `skills/python-project-workflow/reference/available-tools.md` | Current PyCharm MCP command inventory. |
+| `.claude-plugin/` | Claude Code plugin and marketplace metadata. |
+| `.codex-plugin/` | Codex plugin metadata. |
 
 ## License
 

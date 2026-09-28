@@ -1,41 +1,42 @@
 {
-  "name": "rider-skills",
-  "version": "0.1.0",
-  "description": "JetBrains Rider agent skills for semantic refactoring, debugger-driven runtime analysis, C# test discovery, and Unreal Engine C++ authoring, testing, and live debugging.",
+  "name": "pycharm-skills",
+  "version": "0.2.0",
+  "description": "PyCharm agent skills for Python project workflows, test discovery, code navigation and refactoring, notebooks, and database operations.",
   "author": {
-    "name": "JetBrains",
-    "url": "https://www.jetbrains.com/rider/"
+    "name": "Brunnels"
   },
-  "homepage": "https://github.com/JetBrains/rider-skills",
-  "repository": "https://github.com/JetBrains/rider-skills",
+  "homepage": "https://github.com/brunnels/pycharm-skills",
+  "repository": "https://github.com/brunnels/pycharm-skills",
   "license": "Apache-2.0",
   "keywords": [
-    "rider",
+    "pycharm",
     "jetbrains",
     "ide",
+    "python",
     "refactoring",
     "debugging",
     "test-discovery",
-    "unreal-engine",
+    "jupyter",
+    "database",
     "mcp"
   ],
   "skills": "./skills/",
   "interface": {
-    "displayName": "Rider Skills",
-    "shortDescription": "Rider refactoring, debugging, test discovery, and Unreal Engine C++ skills",
-    "longDescription": "Use Rider Skills to guide agents toward JetBrains Rider MCP workflows for semantic refactoring, debugger-driven root-cause analysis, C# test discovery, and Unreal Engine C++ authoring, testing, and live debugging across Rider-supported projects.",
-    "developerName": "JetBrains",
+    "displayName": "PyCharm Skills",
+    "shortDescription": "PyCharm Python, notebook, and database workflows",
+    "longDescription": "Use PyCharm Skills to guide agents through Python project inspection, diagnostics, test discovery, semantic symbol renames, notebook execution, and database workflows with the PyCharm MCP server.",
+    "developerName": "Brunnels",
     "category": "Coding",
     "capabilities": [
       "Interactive",
       "Read",
       "Write"
     ],
-    "websiteURL": "https://github.com/JetBrains/rider-skills",
+    "websiteURL": "https://github.com/brunnels/pycharm-skills",
     "defaultPrompt": [
-      "Refactor this code symbol using Rider.",
-      "Debug this runtime failure in Rider.",
-      "Find existing tests for this C# method."
+      "Investigate this Python runtime failure using PyCharm.",
+      "Find and run the existing Python tests for this code.",
+      "Inspect this notebook or database through PyCharm."
     ]
   }
 }

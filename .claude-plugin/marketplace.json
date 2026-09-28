@@ -1,16 +1,16 @@
 {
-  "name": "rider-skills",
+  "name": "pycharm-skills",
   "owner": {
-    "name": "JetBrains"
+    "name": "Brunnels"
   },
   "plugins": [
     {
-      "name": "rider-skills",
-      "version": "0.1.0",
+      "name": "pycharm-skills",
+      "version": "0.2.0",
       "source": "./",
-      "description": "Rider semantic refactoring, debugger-driven analysis, C# test discovery, and Unreal Engine C++ skills.",
+      "description": "PyCharm agent skills for Python project workflows, test discovery, code navigation and refactoring, notebooks, and database operations.",
       "author": {
-        "name": "JetBrains"
+        "name": "Brunnels"
       }
     }
   ]
